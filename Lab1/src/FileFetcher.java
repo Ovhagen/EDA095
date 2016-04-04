@@ -13,8 +13,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.security.auth.callback.Callback;
-
 public class FileFetcher {
 	private static String url;
 	private Pattern pattern = Pattern.compile("<a[^>]* href=\"([^\"]*.pdf)\"");
@@ -28,7 +26,7 @@ public class FileFetcher {
 		links = f.getPdfLinks(url);
 		int i = 0;
 		for (URL u : links) {
-			downloadFile(u, ("file" + i));
+			downloadFile(u, ("Lab1/files/file" + i));
 			i++;
 		}
 	}

@@ -1,4 +1,4 @@
-package Lab1.src;
+package Threader;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,25 +14,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileFetcher {
-	private static String url;
 	private Pattern pattern = Pattern.compile("<a[^>]* href=\"([^\"]*.pdf)\"");
+	
+	public FileFetcher (){}
 
-	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
-		url = scan.nextLine();
-
-		FileFetcher f = new FileFetcher();
-		List<URL> links = new ArrayList<URL>();
-		links = f.getPdfLinks(url);
-		int i = 0;
-		for (URL u : links) {
-			String[] fPath = u.toString().split("/");
-			System.out.println(fPath[fPath.length-1]);
-			downloadFile(u, ("Lab1/files/" + fPath[fPath.length-1]));
-		}
-	}
-
-	public List<URL> getPdfLinks(String url) {
+	public synchronized List<URL> getPdfLinks(String url) {
 		ArrayList<URL> links = new ArrayList<URL>();
 		try {
 			URL link = new URL(url);
@@ -52,7 +38,8 @@ public class FileFetcher {
 		}
 		return links;
 	}
-
+	
+/*
 	private static void downloadFile(URL url, String fileName) {
 		File file;
 		FileOutputStream output;
@@ -78,5 +65,5 @@ public class FileFetcher {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

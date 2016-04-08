@@ -26,21 +26,23 @@ public class FileFetcher {
 		links = f.getPdfLinks(url);
 		int i = 0;
 		for (URL u : links) {
-			downloadFile(u, ("Lab1/files/file" + i));
-			i++;
+			String[] fPath = u.toString().split("/");
+			System.out.println(fPath[fPath.length-1]);
+			downloadFile(u, ("Lab1/files/" + fPath[fPath.length-1]));
 		}
 	}
 
 	public List<URL> getPdfLinks(String url) {
 		ArrayList<URL> links = new ArrayList<URL>();
 		try {
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
+			URL link = new URL(url);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(link.openStream()));
 			String s;
 			while ((s = bufferedReader.readLine()) != null) {
 				Matcher matcher = pattern.matcher(s);
-				if(matcher.find()){
+				while(matcher.find()){
 					System.out.println(matcher.group(1));
-					links.add(new URL(matcher.group(1)));
+					links.add(new URL(link, matcher.group(1)));
 				}
 			}
 		} catch (MalformedURLException e) {
@@ -72,7 +74,7 @@ public class FileFetcher {
 			output.flush();
 			output.close();
 
-			System.out.println("File downloaded");
+			System.out.println("Downloaded: " + fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

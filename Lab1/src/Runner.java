@@ -7,12 +7,12 @@ import java.net.URL;
 
 import javax.security.auth.callback.Callback;
 
-public class Downloader {
+public class Runner {
 	private URL url;
 	private String fileName;
 	private Callback callback;
 	
-	public Downloader(URL url, String fileName, Callback callback) {
+	public Runner(URL url, String fileName, Callback callback) {
 		this.url = url;
 		this.fileName = fileName;
 		this.callback = callback;

@@ -7,12 +7,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FileFetcher {
 	private Pattern pattern = Pattern.compile("<a[^>]* href=\"([^\"]*.pdf)\"");
-	private Stack<URL> urls;
 	private ArrayList<URL> links;
 	public FileFetcher (){}
 
@@ -35,19 +36,12 @@ public class FileFetcher {
 			e.printStackTrace();
 		}
 		
-		urls = new Stack<URL>();
+		ExecutorService service = Executors.newFixedThreadPool(7);
 		for(URL u : links){
-			urls.push(u);
+			service.submit(new Runner(u));
 		}
+		service.shutdown();
 		
-	}
-	
-	public synchronized boolean isEmpty() {
-		return urls.isEmpty();
-	}
-
-	public synchronized URL getURL() {
-		return urls.pop();
 	}
 
 }

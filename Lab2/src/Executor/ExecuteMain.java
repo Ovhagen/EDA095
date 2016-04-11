@@ -11,11 +11,6 @@ public class ExecuteMain {
 		FileFetcher fe = new FileFetcher();
 		fe.download(url);
 		
-		ExecutorService service = Executors.newFixedThreadPool(4);
-		
-		Runnable task = new Runner(fe);
-		service.submit(task);
-		service.shutdown();
 	}
 
 }

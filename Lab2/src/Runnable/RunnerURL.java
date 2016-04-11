@@ -9,13 +9,14 @@ import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
-public class RunnerURL {
-	private List<URL> urls;
+public class RunnerURL implements Runnable{
+	private FileFetcher fe;
 
-	public RunnerURL(List<URL> urls) {
-		this.urls = urls;
+	public RunnerURL(FileFetcher fe) {
+		this.fe = fe;
 	}
 
+	@Override
 	public void run() {
 		File file;
 		String fileName;
@@ -23,13 +24,14 @@ public class RunnerURL {
 		BufferedInputStream bis;
 
 		try {
-			for (URL u : urls) {
-				String[] fPath = u.toString().split("/");
-				fileName = fPath[fPath.length - 1];
+			while(!fe.isEmpty()) {
+				URL url = fe.getURL();
+				String[] fPath = url.toString().split("/");
+				fileName = "Lab2/files2/" + fPath[fPath.length - 1];
 				file = new File(fileName);
 				file.createNewFile();
 				fout = new FileOutputStream(file);
-				bis = new BufferedInputStream(u.openStream());
+				bis = new BufferedInputStream(url.openStream());
 
 				byte[] buffer = new byte[4096];
 				int bytes;
